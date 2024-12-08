@@ -118,8 +118,11 @@ main{
     /* background-color: rgb(255, 89, 0); */
 }
 .check-box>i{
+    transform: scale(0);
+}
+i.checked{
     transform: scale(1);
-    color: white;
+    color: black;
 }
 
 
