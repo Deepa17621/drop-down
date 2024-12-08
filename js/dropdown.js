@@ -1,6 +1,49 @@
-const usersList = document.querySelectorAll(".users"),
+let userListWrapperUL = document.querySelector(".user-list");
+
+const userList={
+    "Hattori": `<img src="./assets/hattori.jpg" alt="">`,
+    "Kenichi": `<img src="./assets/Kenichi.webp" alt="">`,
+    "Shinsho":  `<img src="./assets/shinsho.jpg" alt="">`,
+    "Shishimaru": `<i class="fa-solid fa-user"></i>`,
+    "Kemumaki": `<img src="./assets/kemumaki.jpg" alt="">`,
+    "Yumiko": `<img src="./assets/yumiko.jpg" alt="">`,
+    "Shincha": `<img src="./assets/shinchan.jpg" alt="">`,
+    "Himawari": `<img src="./assets/himawari.jpg" alt="">`,
+    "DoluBolu": `<img src="./assets/Dholu.webp" alt="">`,
+    "Heidi": `<img src="./assets/heidi.jpg" alt="">`
+}
+//Configure Drop-Down 
+function addUsersToList() {
+    
+    for (const key in userList) {
+        let li = document.createElement("li");
+        li.setAttribute("class", "user");
+        let template = `<span class="user-profile">${userList[key]}</span>
+                        <span class="user-name">${key}</span>
+                        <span class="check-box">
+                            <i class="fa-solid fa-check"></i>                            
+                        </span>`;
+        li.innerHTML = template;
+        userListWrapperUL.appendChild(li);
+    }
+    
+}
+addUsersToList();
+
+const usersList = document.querySelectorAll(".user"),
     userInput = document.querySelector("#user-inpt"),
-    dropdownWrapper = document.querySelector(".dropdown-wrapper");
+    dropdownWrapper = document.querySelector(".dropdown-wrapper"),
+    wrapperForDrpDwnAndBtn = document.querySelector(".wrap-drpdwn-btn");
+    
+//buttons
+const doneBtn = document.querySelector("#done-btn"),
+      clearBtn = document.querySelector("#clr-btn"),
+      clearAllBtn = document.querySelector("#clr-all-btn");
+
+clearBtn.addEventListener("click", (e)=>{
+    e.preventDefault();
+    wrapperForDrpDwnAndBtn.style.display="none";
+});
 
 userInput.value = "Select Users";
 
@@ -29,3 +72,23 @@ usersList.forEach(user => {
         }
     });
 });
+
+clearAllBtn.addEventListener("click", (e)=>{
+    e.preventDefault();
+    let selectedUsers = document.querySelectorAll(".checked");
+    selectedUsers.forEach(selectedUser => {
+        selectedUser.classList.remove("checked");
+    });
+    userInput.value = "Select Users";
+});
+
+doneBtn.addEventListener("click", (e)=>{
+    e.preventDefault();
+    let selectedUsers = document.querySelectorAll(".checked");
+    let userArr = [];
+    selectedUsers.forEach(selectedChild => {
+        let user = selectedChild.closest(".user");
+        userArr.push(user.querySelector(".user-name").textContent)
+    });
+    console.log(userArr);
+})

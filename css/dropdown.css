@@ -15,7 +15,7 @@
     align-items: center;
 }
 main{
-    width: 300px;
+    width: 350px;
     padding: 40px;
 }
 .get-inpt-wrapper{
@@ -39,6 +39,9 @@ main{
         border: 1.5px solid orange;
         box-shadow:0 0 5px 0.5px orange;
     } 
+}
+.wrap-drpdwn-btn{
+    width: 100%;
 }
 .dropdown-wrapper{
     border-radius: 0.3em;
@@ -72,7 +75,7 @@ main{
     overflow: auto;
     scrollbar-width: none;
 }
-.users{
+.user{
     max-width: 100%;
     padding: 0.7em 1em;
     display: flex;
@@ -84,6 +87,43 @@ main{
     }
     &:hover{
         cursor: pointer;  
+    }
+}
+.btns-container{
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.buttons{
+    width: 70px;
+    padding: 0.2rem;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+}
+#clr-btn{
+    background-color: rgba(222, 32, 32);
+    color: white;
+    transition: background-color 0.5s;
+    &:hover{
+        background-color: red;
+    }
+}
+#clr-all-btn{
+    background-color: rgb(190, 199, 208);
+    color: rgb(13, 12, 14);
+    transition: background-color 0.5s;
+    &:hover{
+        background-color: rgb(158, 176, 195);
+    }
+}
+#done-btn{
+    background-color: rgb(46, 149, 46);
+    color: white;
+    transition: background-color 0.5s;
+    &:hover{
+        background-color: rgb(78, 211, 38);
     }
 }
 .user-profile{
