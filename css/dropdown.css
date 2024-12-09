@@ -26,19 +26,27 @@ main{
     justify-content: space-between;
     border-radius: 5px;
     margin-bottom: 0.9em;
+    border: 0.5ox solid grey;
 }
 .get-inpt-wrapper input{
     height: 100%;
     width: 100%;
+    border: none;
     padding: 10px;
     /* border-radius: inherit; */
     &:focus{
         outline: rgba(255, 166, 0, 0.699);
-        border: none;
+        /* border: none; */
         border-radius: 5px;
-        border: 1.5px solid orange;
+        /* border: 1.5px solid orange; */
         box-shadow:0 0 5px 0.5px orange;
     } 
+}
+.chevron{
+    margin-right: 10px;
+    &:hover{
+        cursor: pointer;
+    }
 }
 .wrap-drpdwn-btn{
     width: 100%;

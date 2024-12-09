@@ -14,7 +14,6 @@ const userList={
 }
 //Configure Drop-Down 
 function addUsersToList() {
-    
     for (const key in userList) {
         let li = document.createElement("li");
         li.setAttribute("class", "user");
@@ -33,8 +32,42 @@ addUsersToList();
 const usersList = document.querySelectorAll(".user"),
     userInput = document.querySelector("#user-inpt"),
     dropdownWrapper = document.querySelector(".dropdown-wrapper"),
-    wrapperForDrpDwnAndBtn = document.querySelector(".wrap-drpdwn-btn");
-    
+    wrapperForDrpDwnAndBtn = document.querySelector(".wrap-drpdwn-btn"),
+    searchUser = document.querySelector("#search-bar"),
+    chevron = document.querySelector(".chevron");
+
+if(chevron.children[0].classList.contains("fa-rotate-180")){
+    wrapperForDrpDwnAndBtn.style.display="none";
+}
+
+chevron.addEventListener("click", (e)=>{
+    e.preventDefault();
+    chevron.classList.toggle("fa-rotate-180");
+    if(chevron.classList.contains("fa-rotate-180")){
+        wrapperForDrpDwnAndBtn.style.display="none";
+    }
+    else {
+        wrapperForDrpDwnAndBtn.style.display="block"
+    }
+})
+
+searchUser.addEventListener("input", (e)=>{
+    e.preventDefault();
+    for (const userName in userList) {
+        if((e.target.value) == userName){
+            let li = document.createElement("li");
+            li.setAttribute("class", "user");
+            let template = `<span class="user-profile">${userList[userName]}</span>
+                            <span class="user-name">${userName}</span>
+                            <span class="check-box">
+                                <i class="fa-solid fa-check"></i>                            
+                            </span>`;
+            li.innerHTML = template;
+            userListWrapperUL.appendChild(li);
+        }
+    }
+})
+
 //buttons
 const doneBtn = document.querySelector("#done-btn"),
       clearBtn = document.querySelector("#clr-btn"),
@@ -43,6 +76,7 @@ const doneBtn = document.querySelector("#done-btn"),
 clearBtn.addEventListener("click", (e)=>{
     e.preventDefault();
     wrapperForDrpDwnAndBtn.style.display="none";
+    chevron.classList.add("fa-rotate-180")
 });
 
 userInput.value = "Select Users";
@@ -84,11 +118,12 @@ clearAllBtn.addEventListener("click", (e)=>{
 
 doneBtn.addEventListener("click", (e)=>{
     e.preventDefault();
+    wrapperForDrpDwnAndBtn.style.display = "none"
     let selectedUsers = document.querySelectorAll(".checked");
     let userArr = [];
     selectedUsers.forEach(selectedChild => {
         let user = selectedChild.closest(".user");
         userArr.push(user.querySelector(".user-name").textContent)
     });
-    console.log(userArr);
+    
 })
