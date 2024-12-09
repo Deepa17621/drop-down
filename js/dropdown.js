@@ -1,5 +1,6 @@
 let userListWrapperUL = document.querySelector(".user-list");
 
+// To List Down the Dynamically - User Name with user display picture
 const userList={
     "Hattori": `<img src="./assets/hattori.jpg" alt="">`,
     "Kenichi": `<img src="./assets/Kenichi.webp" alt="">`,
@@ -24,22 +25,28 @@ function addUsersToList() {
                         </span>`;
         li.innerHTML = template;
         userListWrapperUL.appendChild(li);
-    }
-    
+    } 
 }
-addUsersToList();
+
+addUsersToList(); //Execution starts from here
 
 const usersList = document.querySelectorAll(".user"),
     userInput = document.querySelector("#user-inpt"),
     dropdownWrapper = document.querySelector(".dropdown-wrapper"),
     wrapperForDrpDwnAndBtn = document.querySelector(".wrap-drpdwn-btn"),
     searchUser = document.querySelector("#search-bar"),
-    chevron = document.querySelector(".chevron");
+    chevron = document.querySelector(".chevron"),
+    tagsContainer = document.querySelector(".tags-container");
 
-if(chevron.children[0].classList.contains("fa-rotate-180")){
+//Default Chevron - Display/close dropdown
+// if(chevron.children[0].classList.contains("fa-rotate-180")){
+//     wrapperForDrpDwnAndBtn.style.display="none";
+// }
+
+chevron.classList.add("fa-rotate-180");
+if(chevron.classList.contains("fa-rotate-180")){
     wrapperForDrpDwnAndBtn.style.display="none";
 }
-
 chevron.addEventListener("click", (e)=>{
     e.preventDefault();
     chevron.classList.toggle("fa-rotate-180");
@@ -81,6 +88,7 @@ clearBtn.addEventListener("click", (e)=>{
 
 userInput.value = "Select Users";
 
+//select user - Event
 usersList.forEach(user => {
     user.addEventListener("click", (e) => {
         e.preventDefault();
@@ -114,6 +122,7 @@ clearAllBtn.addEventListener("click", (e)=>{
         selectedUser.classList.remove("checked");
     });
     userInput.value = "Select Users";
+
 });
 
 doneBtn.addEventListener("click", (e)=>{
@@ -125,5 +134,45 @@ doneBtn.addEventListener("click", (e)=>{
         let user = selectedChild.closest(".user");
         userArr.push(user.querySelector(".user-name").textContent)
     });
+    if(userArr.length>2){
+        let remaining = document.querySelector(".remaining-user-count");
+        remaining.innerHTML = `<span class="count">+${userArr.length-2}</span> <i class="fa-solid fa-xmark"></i>`;
+        remaining.style.backgroundColor="rgba(224, 122, 85, 0.929)";
+    }
+    for (let i = 0; i < 2; i++) {
+        addTag(userArr[i]);
+    }
     
-})
+});
+
+let remainingCount = document.querySelector(".remaining-user-count");
+remainingCount.addEventListener("click", (e)=>{
+    e.preventDefault();
+    let selectedUser = document.querySelectorAll(".checked");
+    let arr = []
+    selectedUser.forEach(element => {
+        let user = element.closest(".user");
+        arr.push(user.querySelector(".user-name"));
+    });
+});
+
+function addTag(tag) {
+    
+        // Create tag element
+        const tagElement = document.createElement("div");
+        tagElement.className = "tag";
+        tagElement.innerHTML = `${tag} <span class="remove-tag">&times;</span>`;
+
+        // Append to tags container
+        tagsContainer.appendChild(tagElement);
+
+        // Add event listener to remove tag
+        tagElement.querySelector(".remove-tag").addEventListener("click", () => {
+            removeTag(tag, tagElement);
+        });
+        userInput.value = "";
+}
+
+function removeTag(tag, element) {
+    tagsContainer.removeChild(element);
+}
