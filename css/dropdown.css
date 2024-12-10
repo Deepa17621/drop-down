@@ -130,10 +130,8 @@ main{
     display: flex;
     font-size: 14px;
     justify-content: space-between;
+    align-items: center;
     border-bottom: 0.5px solid grey;
-    &>.user-name{
-        text-align: left;
-    }
     &:hover{
         cursor: pointer;  
     }
@@ -164,6 +162,7 @@ main{
     background-color: rgb(190, 199, 208);
     color: rgb(13, 12, 14);
     transition: background-color 0.5s;
+    margin-left: 120px;
     &:hover{
         background-color: rgb(158, 176, 195);
     }
