@@ -85,7 +85,7 @@ searchUser.addEventListener("input", (e) => {
         }
     }
     selectUserFunc();
-    searchUser.value = "";
+    // searchUser.value = "";
     if(document.activeElement!==searchUser){
         addUsersToList(userList);
     }
