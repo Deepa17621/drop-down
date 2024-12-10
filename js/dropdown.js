@@ -12,6 +12,7 @@ const userList = {
     "DoluBolu": `<img src="./assets/Dholu.webp" alt="">`,
     "Heidi": `<img src="./assets/heidi.jpg" alt="">`
 }
+
 //Configure Drop-Down 
 function addUsersToList(userList) {
     for (const key in userList) {
@@ -50,7 +51,7 @@ let remainingCount = document.querySelector(".remaining-user-count");
 chevron.classList.add("fa-rotate-180");  //Initial position of chevron
 dropdownToggle(); 
 
-chevron.addEventListener("click", (e) => {
+(document.querySelector(".get-inpt-wrapper")).addEventListener("click", (e) => {
     e.preventDefault();
     chevron.classList.toggle("fa-rotate-180");
     let inpWrapper = (document.querySelector(".get-inpt-wrapper"));
@@ -66,24 +67,25 @@ chevron.addEventListener("click", (e) => {
     dropdownToggle();
 });
 
-
-
-searchUser.addEventListener("input", (e) => {
+searchUser.addEventListener("keyup", (e) => {
     e.preventDefault();
-    userListWrapperUL.innerHTML = "";
-    for (const name in userList) {
-        if((e.target.value)===name){
+    let filteredItem = (Object.entries(userList)).filter(user=>{
+        userListWrapperUL.innerHTML = "";
+        if(user[0].toLowerCase().includes(searchUser.value.toLowerCase())){
             let li = document.createElement("li");
             li.setAttribute("class", "user");
-            let template = `<span class="user-profile">${userList[name]}</span>
-                            <span class="user-name">${name}</span>
+            let template = `<span class="user-profile">${user[1]}</span>
+                            <span class="user-name">${user[0]}</span>
                             <span class="check-box">
                                 <i class="fa-solid fa-check"></i>                            
                             </span>`;
             li.innerHTML = template;
             userListWrapperUL.appendChild(li);
         }
-    }
+        // else{
+        //     alert("No Users Found!")
+        // }
+    });
     selectUserFunc();
     // searchUser.value = "";
     if(document.activeElement!==searchUser){
@@ -102,7 +104,7 @@ clearBtn.addEventListener("click", (e) => {
     location.reload();
 });
 
-userInput.placeholder = "Select Users";
+userInput.textContent = "Select Users";
 
 //select user - Event
 function selectUserFunc() {
@@ -118,8 +120,14 @@ function selectUserFunc() {
                 checkBox[0].classList.toggle("checked");
             }
             else if (clickedEle.length >= 5) {
-                alert("Maximum users selected!");
-                return;
+                (document.querySelectorAll(".user")).forEach(element => {
+                    if(!checkBox[0].classList.contains("checked")){
+                        element.setAttribute("title", "Maximum users selected!")
+                        if(document.querySelectorAll(".checked").length>5){
+                            element.style.cursor=element.querySelector(".checked")?"pointer":"none";
+                        }
+                    }
+                });
             }
             else {
                 checkBox[0].classList.toggle("checked");
@@ -127,9 +135,9 @@ function selectUserFunc() {
             //update selected Count
             clickedEle = document.querySelectorAll(".checked");
             if (clickedEle.length >= 0 && clickedEle.length <= 2) {
-                userInput.placeholder = "Select Users";
+                userInput.textContent = "Select Users";
             } else {
-                userInput.placeholder = `${clickedEle.length} user${clickedEle.length > 1 ? "s" : ""} Selected`;
+                userInput.textContent = `${clickedEle.length} user${clickedEle.length > 1 ? "s" : ""} Selected`;
             }
         });
     });
@@ -142,10 +150,6 @@ clearAllBtn.addEventListener("click", (e) => {
     selectedUsers.forEach(selectedUser => {
         selectedUser.classList.remove("checked");
     });
-    remainingCount.innerHTML = "";
-    remainingCount.style.backgroundColor = "white"
-    tagsContainer.innerHTML = "";
-    userInput.placeholder = "Select Users";
 });
 function updateRemainingCount(selectedUsers) {
     if (selectedUsers.length > 2) {
@@ -161,9 +165,8 @@ doneBtn.addEventListener("click", (e) => {
     dropdownToggle();
 
     let selectedUsers = document.querySelectorAll(".checked");
-    if(selectedUsers.length==0){
-        alert("No Users Selected!");
-        return;
+    if(selectedUsers.length===0){
+        location.reload()
     }
     let userArr = {};
 
@@ -196,8 +199,7 @@ function addTag(userName, tagParent) {
 
     if(tagsContainer.children.length==2) return;
 
-    userInput.value = "";
-    userInput.placeholder = ""
+    userInput.textContent = ""
     const tagElement = document.createElement("div");
     tagElement.className = `tag`;
     tagElement.innerHTML = `${userName} <span class="remove-tag">&times;</span>`;

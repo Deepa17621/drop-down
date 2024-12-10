@@ -26,27 +26,14 @@ main{
     justify-content: space-between;
     border-radius: 5px;
     margin-bottom: 0.9em;
+    padding: 8px 0px;
+    cursor: pointer;
 }
-.get-inpt-wrapper input{
-    height: 100%;
-    width: 100%;
-    border: none;
-    padding: 10px;
-    /* border-radius: inherit; */
-    &:focus{
-        /* outline: rgba(255, 166, 0, 0.699); */
-        border: none;
-        outline: none;
-        border-radius: 5px;
-        flex: 1;
-        /* box-shadow:0 0 5px 0.5px orange; */
-    } 
-}
+
 .tags-container{
     padding-left: 10px;
     display: flex;
     gap: 10px;
-    /* flex-wrap: wrap; */
 }
 .tag {
     background-color: #e0e0e0;
@@ -56,6 +43,7 @@ main{
     display: flex;
     align-items: center;
     gap: 5px;
+    color: black;
 }
 .tag .remove-tag {
     cursor: pointer;
@@ -133,8 +121,15 @@ main{
     align-items: center;
     border-bottom: 0.5px solid grey;
     &:hover{
-        cursor: pointer;  
+        cursor: pointer;
     }
+}
+#user-inpt{
+    font-size: 12px;
+    color: rgb(156, 151, 151);
+}
+.user:has(.checked):hover{
+   cursor: pointer;
 }
 .btns-container{
     width: 100%;
