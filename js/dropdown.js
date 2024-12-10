@@ -66,9 +66,7 @@ chevron.addEventListener("click", (e) => {
     dropdownToggle();
 });
 
-if(document.activeElement!==searchUser){
-    addUsersToList(userList);
-}
+
 
 searchUser.addEventListener("input", (e) => {
     e.preventDefault();
@@ -88,6 +86,9 @@ searchUser.addEventListener("input", (e) => {
     }
     selectUserFunc();
     searchUser.value = "";
+    if(document.activeElement!==searchUser){
+        addUsersToList(userList);
+    }
 });
 //buttons
 const doneBtn = document.querySelector("#done-btn"),
