@@ -26,7 +26,6 @@ main{
     justify-content: space-between;
     border-radius: 5px;
     margin-bottom: 0.9em;
-    border: 0.5ox solid grey;
 }
 .get-inpt-wrapper input{
     height: 100%;
@@ -35,11 +34,12 @@ main{
     padding: 10px;
     /* border-radius: inherit; */
     &:focus{
-        outline: rgba(255, 166, 0, 0.699);
+        /* outline: rgba(255, 166, 0, 0.699); */
         border: none;
+        outline: none;
         border-radius: 5px;
         flex: 1;
-        box-shadow:0 0 5px 0.5px orange;
+        /* box-shadow:0 0 5px 0.5px orange; */
     } 
 }
 .tags-container{
@@ -204,15 +204,18 @@ main{
     font-size: x-small;
     padding: 0.1em;
     box-shadow: 0 0 0.9px 0.2px;   
-    box-shadow: 1px 1px 0.5 grey;
-    /* background-color: rgb(255, 89, 0); */
+    transition: background-color 0.3s;
 }
 .check-box>i{
     transform: scale(0);
 }
 i.checked{
     transform: scale(1);
-    color: black;
+    color: white;
+}
+.check-box:has(.checked){
+    background-color: rgb(241, 147, 6);
+    box-shadow: 0 0 0.9px 0.2px rgb(241, 147, 6) ;
 }
 
 
