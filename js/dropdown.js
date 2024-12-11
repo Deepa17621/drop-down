@@ -52,7 +52,8 @@ chevron.classList.add("fa-rotate-180");  //Initial position of chevron
 dropdownToggle(); 
 
 (document.querySelector(".get-inpt-wrapper")).addEventListener("click", (e) => {
-    e.preventDefault();
+    // e.preventDefault();
+    e.stopPropagation();
     chevron.classList.toggle("fa-rotate-180");
     let inpWrapper = (document.querySelector(".get-inpt-wrapper"));
     if(!chevron.classList.contains("fa-rotate-180")){
@@ -68,28 +69,36 @@ dropdownToggle();
 });
 
 searchUser.addEventListener("keyup", (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     let filteredItem = (Object.entries(userList)).filter(user=>{
         userListWrapperUL.innerHTML = "";
         if(user[0].toLowerCase().includes(searchUser.value.toLowerCase())){
-            let li = document.createElement("li");
-            li.setAttribute("class", "user");
-            let template = `<span class="user-profile">${user[1]}</span>
-                            <span class="user-name">${user[0]}</span>
-                            <span class="check-box">
-                                <i class="fa-solid fa-check"></i>                            
-                            </span>`;
-            li.innerHTML = template;
-            userListWrapperUL.appendChild(li);
+           return user;
         }
-        // else{
-        //     alert("No Users Found!")
-        // }
     });
-    selectUserFunc();
-    // searchUser.value = "";
-    if(document.activeElement!==searchUser){
-        addUsersToList(userList);
+    if(filteredItem.length!==0){
+        userListWrapperUL.innerHTML = "";
+        filteredItem.forEach(element => {
+            let li = document.createElement("li");
+        li.setAttribute("class", "user");
+        let template = `<span class="user-profile">${element[1]}</span>
+                        <span class="user-name">${element[0]}</span>
+                        <span class="check-box">
+                            <i class="fa-solid fa-check"></i>                            
+                        </span>`;
+        li.innerHTML = template;
+        userListWrapperUL.appendChild(li);
+        });
+        selectUserFunc(document.querySelectorAll(".user"));
+    }
+    else {
+       let span = `<span id="not-found">No Users Found!</span>`;
+       userListWrapperUL.innerHTML = span;
+       (userListWrapperUL.querySelector("#not-found")).style.cssText=`display:flex;
+                                        justify-content:center;
+                                        margin-top: 20%;
+                                        color:red;
+                                        font-size:12px;`
     }
 });
 //buttons
@@ -107,8 +116,8 @@ clearBtn.addEventListener("click", (e) => {
 userInput.textContent = "Select Users";
 
 //select user - Event
-function selectUserFunc() {
-    usersList.forEach(user => {
+function selectUserFunc(usersMenu) {
+    usersMenu.forEach(user => {
 
         user.addEventListener("click", (e) => {
     
@@ -124,7 +133,7 @@ function selectUserFunc() {
                     if(!checkBox[0].classList.contains("checked")){
                         element.setAttribute("title", "Maximum users selected!")
                         if(document.querySelectorAll(".checked").length>5){
-                            element.style.cursor=element.querySelector(".checked")?"pointer":"none";
+                            element.style.cursor=element.querySelector(".checked")?"pointer":"not-allowed";
                         }
                     }
                 });
