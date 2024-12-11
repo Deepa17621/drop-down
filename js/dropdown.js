@@ -13,14 +13,14 @@ const userList = {
     "Heidi": `<img src="./assets/heidi.jpg" alt="">`
 }
 
-//Configure Drop-Down 
+//Configure Drop-Down menu
 function addUsersToList(userList) {
     for (const key in userList) {
         let li = document.createElement("li");
         li.setAttribute("class", "user");
         let template = `<span class="user-profile">${userList[key]}</span>
                         <span class="user-name">${key}</span>
-                        <span class="check-box">
+                        <span class="check-box" tabindex="0">
                             <i class="fa-solid fa-check"></i>                            
                         </span>`;
         li.innerHTML = template;
@@ -49,58 +49,59 @@ const usersList = document.querySelectorAll(".user"),
 let remainingCount = document.querySelector(".remaining-user-count");
 
 chevron.classList.add("fa-rotate-180");  //Initial position of chevron
-dropdownToggle(); 
+dropdownToggle();
 
+//user-inpt container - click event and change border colr based on display
 (document.querySelector(".get-inpt-wrapper")).addEventListener("click", (e) => {
-    // e.preventDefault();
     e.stopPropagation();
     chevron.classList.toggle("fa-rotate-180");
     let inpWrapper = (document.querySelector(".get-inpt-wrapper"));
-    if(!chevron.classList.contains("fa-rotate-180")){
-        console.log("deepa");
-        inpWrapper.style.cssText=`border: 1px solid rgb(233, 151, 10);
+    if (!chevron.classList.contains("fa-rotate-180")) {
+        inpWrapper.style.cssText = `border: 1px solid rgb(233, 151, 10);
                                   outline: 1px solid rgb(237, 155, 13);`
     }
-    else{
-        inpWrapper.style.cssText=`border: none;
+    else {
+        inpWrapper.style.cssText = `border: none;
                                 outline: none;`;
     }
     dropdownToggle();
+    e.stopPropagation();
 });
 
 searchUser.addEventListener("keyup", (e) => {
-    // e.preventDefault();
-    let filteredItem = (Object.entries(userList)).filter(user=>{
+    e.preventDefault();
+    let filteredItem = (Object.entries(userList)).filter(user => {
         userListWrapperUL.innerHTML = "";
-        if(user[0].toLowerCase().includes(searchUser.value.toLowerCase())){
-           return user;
+        if (user[0].toLowerCase().includes(searchUser.value.toLowerCase())) {
+            return user;
         }
     });
-    if(filteredItem.length!==0){
+    if (filteredItem.length !== 0) {
         userListWrapperUL.innerHTML = "";
         filteredItem.forEach(element => {
             let li = document.createElement("li");
-        li.setAttribute("class", "user");
-        let template = `<span class="user-profile">${element[1]}</span>
-                        <span class="user-name">${element[0]}</span>
-                        <span class="check-box">
-                            <i class="fa-solid fa-check"></i>                            
-                        </span>`;
-        li.innerHTML = template;
-        userListWrapperUL.appendChild(li);
+            li.setAttribute("class", "user");
+            let template = `<span class="user-profile">${element[1]}</span>
+                            <span class="user-name">${element[0]}</span>
+                            <span class="check-box" tabindex="0">
+                                <i class="fa-solid fa-check"></i>                            
+                            </span>`;
+            li.innerHTML = template;
+            userListWrapperUL.appendChild(li);
         });
         selectUserFunc(document.querySelectorAll(".user"));
     }
     else {
-       let span = `<span id="not-found">No Users Found!</span>`;
-       userListWrapperUL.innerHTML = span;
-       (userListWrapperUL.querySelector("#not-found")).style.cssText=`display:flex;
+        let span = `<span id="not-found">No Users Found!</span>`;
+        userListWrapperUL.innerHTML = span;
+        (userListWrapperUL.querySelector("#not-found")).style.cssText = `display:flex;
                                         justify-content:center;
                                         margin-top: 20%;
                                         color:red;
-                                        font-size:12px;`
+                                        font-size:12px;`;
     }
 });
+
 //buttons
 const doneBtn = document.querySelector("#done-btn"),
     clearBtn = document.querySelector("#clr-btn"),
@@ -113,27 +114,32 @@ clearBtn.addEventListener("click", (e) => {
     location.reload();
 });
 
+clearAllBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    let selectedUsers = document.querySelectorAll(".checked");
+    selectedUsers.forEach(selectedUser => {
+        selectedUser.classList.remove("checked");
+    });
+});
 userInput.textContent = "Select Users";
 
 //select user - Event
 function selectUserFunc(usersMenu) {
     usersMenu.forEach(user => {
-
         user.addEventListener("click", (e) => {
-    
             e.preventDefault();
             let checkBox = user.querySelector(".check-box").children;
             let clickedEle = document.querySelectorAll(".checked");
-    
+
             if (checkBox[0].classList.contains("checked")) {
                 checkBox[0].classList.toggle("checked");
             }
             else if (clickedEle.length >= 5) {
                 (document.querySelectorAll(".user")).forEach(element => {
-                    if(!checkBox[0].classList.contains("checked")){
+                    if (!checkBox[0].classList.contains("checked")) {
                         element.setAttribute("title", "Maximum users selected!")
-                        if(document.querySelectorAll(".checked").length>5){
-                            element.style.cursor=element.querySelector(".checked")?"pointer":"not-allowed";
+                        if (document.querySelectorAll(".checked").length > 5) {
+                            element.style.cursor = element.querySelector(".checked") ? "pointer" : "not-allowed";
                         }
                     }
                 });
@@ -153,13 +159,6 @@ function selectUserFunc(usersMenu) {
 }
 selectUserFunc(usersList);
 
-clearAllBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    let selectedUsers = document.querySelectorAll(".checked");
-    selectedUsers.forEach(selectedUser => {
-        selectedUser.classList.remove("checked");
-    });
-});
 function updateRemainingCount(selectedUsers) {
     if (selectedUsers.length > 2) {
         let remaining = document.querySelector(".remaining-user-count");
@@ -169,12 +168,11 @@ function updateRemainingCount(selectedUsers) {
 }
 doneBtn.addEventListener("click", (e) => {
     e.preventDefault();
-
     chevron.classList.add("fa-rotate-180");
     dropdownToggle();
 
     let selectedUsers = document.querySelectorAll(".checked");
-    if(selectedUsers.length===0){
+    if (selectedUsers.length === 0) {
         location.reload()
     }
     let userArr = {};
@@ -184,14 +182,10 @@ doneBtn.addEventListener("click", (e) => {
         userArr[user.querySelector(".user-name").textContent] = selectedChild;
     });
     updateRemainingCount(selectedUsers);
-    let tagCount = 0;
     for (const userName in userArr) {
-        if (tagCount > 1) {
-            return
-        }
         if (Object.entries(userArr).length == 0) return;
-        tagCount++;
-        let removedUser = addTag(userName, userArr[userName], (Object.keys(userArr)).indexOf(userName));
+        console.log("Deepa -1");
+        addTag(userName, userArr[userName], (Object.keys(userArr)).indexOf(userName));
     }
 });
 
@@ -206,7 +200,7 @@ remainingCount.addEventListener("click", (e) => {
 });
 function addTag(userName, tagParent) {
 
-    if(tagsContainer.children.length==2) return;
+    // if(tagsContainer.children.length==2) return;
 
     userInput.textContent = ""
     const tagElement = document.createElement("div");
@@ -216,6 +210,8 @@ function addTag(userName, tagParent) {
     tagsContainer.appendChild(tagElement);
 
     tagElement.querySelector(".remove-tag").addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         tagParent.classList.remove("checked");
         remove(tagElement);
         updateInputTag();
@@ -233,22 +229,19 @@ function updateInputTag() {   // Need To Update Here.............!
     let count = remaining.querySelector(".count");
 
     let actualRemainingCount;
-    if(count!=null){
+    if (count != null) {
         actualRemainingCount = (count.innerHTML).slice(0);
     }
-    if(currentCheckedEle.length<=2){
+    if (currentCheckedEle.length <= 2) {
         remaining.innerHTML = "";
         tagsContainer.innerHTML = "";
         currentCheckedEle.forEach(element => {
             addTag(element.closest(".user").querySelector(".user-name").textContent, element);
         });
     }
-    else if(currentCheckedEle.length>2 ) {
-        let tagCount = 0;
+    else if (currentCheckedEle.length > 2) {
         currentCheckedEle.forEach(element => {
-            if(tagCount>2) return
             addTag((element.closest(".user")).querySelector(".user-name").textContent, element);
-            tagCount++;
         });
     }
 }
