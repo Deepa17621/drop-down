@@ -12,12 +12,13 @@ const userList = {
     "DoluBolu": `<img src="./assets/Dholu.webp" alt="">`,
     "Heidi": `<img src="./assets/heidi.jpg" alt="">`
 }
-
+let savedUsersArr = new Set();
 //Configure Drop-Down menu
 function addUsersToList(userList) {
     for (const key in userList) {
         let li = document.createElement("li");
         li.setAttribute("class", "user");
+        li.setAttribute("id", `"${key}"`);
         let template = `<span class="user-profile">${userList[key]}</span>
                         <span class="user-name">${key}</span>
                         <span class="check-box" tabindex="0">
@@ -92,6 +93,7 @@ searchUser.addEventListener("keyup", (e) => {
             userListWrapperUL.appendChild(li);
         });
         selectUserFunc(document.querySelectorAll(".user"));
+
     }
     else {
         let span = `<span id="not-found">No Users Found!</span>`;
@@ -102,6 +104,7 @@ searchUser.addEventListener("keyup", (e) => {
                                         color:red;
                                         font-size:12px;`;
     }
+    
 });
 
 //buttons
@@ -113,6 +116,11 @@ clearBtn.addEventListener("click", (e) => {
     e.preventDefault();
     wrapperForDrpDwnAndBtn.classList.remove("show");
     chevron.classList.add("fa-rotate-180");
+    if(savedUsersArr.length!==0){
+        savedUsersArr.forEach(li => {
+            li.querySelector(".check-box").children[0].classList.add("checked");
+        });
+    }
 });
 
 clearAllBtn.addEventListener("click", (e) => {
@@ -186,6 +194,7 @@ doneBtn.addEventListener("click", (e) => {
     selectedUsers.forEach(selectedChild => {
         let user = selectedChild.closest(".user");
         userArr[user.querySelector(".user-name").textContent] = selectedChild;
+        savedUsersArr.add(user);
     });
     updateRemainingCount(selectedUsers);
     tagsContainer.innerHTML = "";
@@ -237,7 +246,7 @@ function updateInputTag() {   // Need To Update Here.............!
         actualRemainingCount = (count.innerHTML).slice(0);
     }
     if (currentCheckedEle.length <= 2) {
-        remaining.innerHTML = "";
+        remaining.style.visibility = "hidden";
         tagsContainer.innerHTML = "";
         currentCheckedEle.forEach(element => {
             if (currentCheckedEle.length == 0) return;
@@ -255,10 +264,8 @@ function updateInputTag() {   // Need To Update Here.............!
 
 function showToast(message) {
     const toast = document.getElementById('toast');
-    toast.textContent = message; // Update the message
-    toast.classList.add('show'); // Show the toast
-
-    // Hide the toast after 3 seconds
+    toast.textContent = message;
+    toast.classList.add('show'); 
     setTimeout(() => {
         toast.classList.remove('show');
     }, 2000);

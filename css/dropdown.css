@@ -105,7 +105,8 @@ main{
     opacity: 0;
     transform: scaleY(0);
     width: 100%;
-    transition: opacity 0.2s ease, visibility 0.3s ease, transform 0.2s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    transform-origin:top ;
 }
 .wrap-drpdwn-btn.show{
     /* visibility: visible; */
@@ -155,6 +156,12 @@ main{
     &:hover{
         cursor: pointer;
     }
+}
+.user.show-user{
+    display: flex;
+}
+.user.hide-user{
+    display: none;
 }
 #user-inpt{
     font-size: 12px;
