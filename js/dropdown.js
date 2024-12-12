@@ -176,7 +176,7 @@ doneBtn.addEventListener("click", (e) => {
         location.reload()
     }
     let userArr = {};
-
+    if(tagsContainer.contains(userInput)) tagsContainer.removeChild(userInput); 
     selectedUsers.forEach(selectedChild => {
         let user = selectedChild.closest(".user");
         userArr[user.querySelector(".user-name").textContent] = selectedChild;
@@ -184,7 +184,7 @@ doneBtn.addEventListener("click", (e) => {
     updateRemainingCount(selectedUsers);
     for (const userName in userArr) {
         if (Object.entries(userArr).length == 0) return;
-        console.log("Deepa -1");
+        if((Object.keys(userArr)).indexOf(userName) == 2) return;
         addTag(userName, userArr[userName], (Object.keys(userArr)).indexOf(userName));
     }
 });
@@ -199,9 +199,6 @@ remainingCount.addEventListener("click", (e) => {
     });
 });
 function addTag(userName, tagParent) {
-
-    // if(tagsContainer.children.length==2) return;
-
     userInput.textContent = ""
     const tagElement = document.createElement("div");
     tagElement.className = `tag`;
@@ -210,12 +207,12 @@ function addTag(userName, tagParent) {
     tagsContainer.appendChild(tagElement);
 
     tagElement.querySelector(".remove-tag").addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+        // e.preventDefault();
         tagParent.classList.remove("checked");
         remove(tagElement);
         updateInputTag();
         updateRemainingCount(document.querySelectorAll(".checked"));
+        e.stopPropagation();
     });
 }
 
@@ -236,12 +233,15 @@ function updateInputTag() {   // Need To Update Here.............!
         remaining.innerHTML = "";
         tagsContainer.innerHTML = "";
         currentCheckedEle.forEach(element => {
+            if (currentCheckedEle.length == 0) return;
             addTag(element.closest(".user").querySelector(".user-name").textContent, element);
         });
     }
     else if (currentCheckedEle.length > 2) {
-        currentCheckedEle.forEach(element => {
-            addTag((element.closest(".user")).querySelector(".user-name").textContent, element);
-        });
+        tagsContainer.innerHTML = "";
+        for (let i = 0; i < currentCheckedEle.length; i++) {
+            if(i==2) break;
+            addTag((currentCheckedEle[i].closest(".user")).querySelector(".user-name").textContent, currentCheckedEle[i]);
+        }
     }
 }

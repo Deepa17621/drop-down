@@ -144,13 +144,13 @@ main{
     border: none;
     border-radius: 2px;
     cursor: pointer;
-    font-size: x-small;
+    font-size: 11px;
 }
 #clr-btn{
     border: 0.5px solid red;
     background-color: white;
     color: red;
-    transition: background-color 0.5s, color 0.1s;
+    transition: background-color 0.4s, color 0.1s;
     &:hover{
         background-color: rgba(246, 4, 4, 0.772);
         color: white;
@@ -160,7 +160,7 @@ main{
     background-color:white;
     border: 1px solid grey;
     color: black;
-    transition: background-color 0.5s;
+    transition: background-color 0.4s;
     margin-left: 120px;
     &:hover{
         background-color: rgb(158, 176, 195);
@@ -170,7 +170,7 @@ main{
 #done-btn{
     background-color:white;
     color: rgb(78, 211, 38);
-    transition: background-color 0.5s;
+    transition: background-color 0.4s;
     border: 1px solid rgb(78, 211, 38);
     &:hover{
         background-color: rgb(78, 211, 38);
@@ -221,5 +221,3 @@ i.checked{
     background-color: rgb(241, 147, 6);
     box-shadow: 0 0 0.9px 0.2px rgb(241, 147, 6) ;
 }
-
-
