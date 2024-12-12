@@ -137,10 +137,10 @@ function selectUserFunc(usersMenu) {
             else if (clickedEle.length >= 5) {
                 (document.querySelectorAll(".user")).forEach(element => {
                     if (!checkBox[0].classList.contains("checked")) {
-                        element.setAttribute("title", "Maximum users selected!")
                         if (document.querySelectorAll(".checked").length > 5) {
                             element.style.cursor = element.querySelector(".checked") ? "pointer" : "not-allowed";
                         }
+                        showToast('Maximum users selected!');
                     }
                 });
             }
@@ -245,4 +245,15 @@ function updateInputTag() {   // Need To Update Here.............!
             addTag((currentCheckedEle[i].closest(".user")).querySelector(".user-name").textContent, currentCheckedEle[i]);
         }
     }
+}
+
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message; // Update the message
+    toast.classList.add('show'); // Show the toast
+
+    // Hide the toast after 3 seconds
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 2000);
 }
