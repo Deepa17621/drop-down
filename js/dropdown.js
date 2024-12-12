@@ -182,6 +182,7 @@ doneBtn.addEventListener("click", (e) => {
         userArr[user.querySelector(".user-name").textContent] = selectedChild;
     });
     updateRemainingCount(selectedUsers);
+    tagsContainer.innerHTML = "";
     for (const userName in userArr) {
         if (Object.entries(userArr).length == 0) return;
         if((Object.keys(userArr)).indexOf(userName) == 2) return;
