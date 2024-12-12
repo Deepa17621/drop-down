@@ -151,7 +151,7 @@ main{
 }
 #user-inpt{
     font-size: 12px;
-    color: rgb(156, 151, 151);
+    color: black;
 }
 .user:has(.checked):hover{
    cursor: pointer;

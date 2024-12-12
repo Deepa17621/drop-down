@@ -48,6 +48,8 @@ const usersList = document.querySelectorAll(".user"),
     tagsContainer = document.querySelector(".tags-container");
 let remainingCount = document.querySelector(".remaining-user-count");
 
+userInput.textContent = "Select Users";
+
 chevron.classList.add("fa-rotate-180");  //Initial position of chevron
 dropdownToggle();
 
@@ -120,8 +122,8 @@ clearAllBtn.addEventListener("click", (e) => {
     selectedUsers.forEach(selectedUser => {
         selectedUser.classList.remove("checked");
     });
+    userInput.textContent = "Select Users";
 });
-userInput.textContent = "Select Users";
 
 //select user - Event
 function selectUserFunc(usersMenu) {
