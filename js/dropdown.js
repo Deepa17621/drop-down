@@ -32,10 +32,10 @@ addUsersToList(userList); //Execution starts from here
 
 function dropdownToggle() {
     if (chevron.classList.contains("fa-rotate-180")) {
-        wrapperForDrpDwnAndBtn.style.display = "none";
+        wrapperForDrpDwnAndBtn.classList.remove("show");
     }
     else {
-        wrapperForDrpDwnAndBtn.style.display = "block"
+        wrapperForDrpDwnAndBtn.classList.add("show");
     }
 }
 
@@ -111,9 +111,8 @@ const doneBtn = document.querySelector("#done-btn"),
 
 clearBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    wrapperForDrpDwnAndBtn.style.display = "none";
+    wrapperForDrpDwnAndBtn.classList.remove("show");
     chevron.classList.add("fa-rotate-180");
-    location.reload();
 });
 
 clearAllBtn.addEventListener("click", (e) => {
@@ -127,6 +126,7 @@ clearAllBtn.addEventListener("click", (e) => {
 
 //select user - Event
 function selectUserFunc(usersMenu) {
+    let pickedUsers = [];
     usersMenu.forEach(user => {
         user.addEventListener("click", (e) => {
             e.preventDefault();
@@ -151,21 +151,25 @@ function selectUserFunc(usersMenu) {
             }
             //update selected Count
             clickedEle = document.querySelectorAll(".checked");
-            if (clickedEle.length >= 0 && clickedEle.length <= 2) {
-                userInput.textContent = "Select Users";
-            } else {
+            if (clickedEle.length >=0) {
+                // userInput.textContent = "Select Users";
                 userInput.textContent = `${clickedEle.length} user${clickedEle.length > 1 ? "s" : ""} Selected`;
             }
+            if(clickedEle.length ==0 ) userInput.textContent = "Select Users"
         });
     });
 }
 selectUserFunc(usersList);
 
 function updateRemainingCount(selectedUsers) {
+    let remaining = document.querySelector(".remaining-user-count");
     if (selectedUsers.length > 2) {
-        let remaining = document.querySelector(".remaining-user-count");
-        remaining.innerHTML = `<span class="count">+${selectedUsers.length - 2}</span> <i class="fa-solid fa-xmark"></i>`;
+        remaining.innerHTML = `<span class="count">+${selectedUsers.length - 2}</span>`;
         remaining.style.backgroundColor = "rgba(224, 122, 85, 0.929)";
+    }
+    else{
+        remaining.innerHTML = "";
+        remaining.style.visibility="hidden";
     }
 }
 doneBtn.addEventListener("click", (e) => {

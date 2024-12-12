@@ -15,7 +15,6 @@
 }
 main{
     width: 350px;
-    padding: 40px;
 }
 /* toast */
 .toast {
@@ -103,7 +102,15 @@ main{
     }
 }
 .wrap-drpdwn-btn{
+    opacity: 0;
+    transform: scaleY(0);
     width: 100%;
+    transition: opacity 0.2s ease, visibility 0.3s ease, transform 0.2s ease;
+}
+.wrap-drpdwn-btn.show{
+    /* visibility: visible; */
+    opacity: 1;
+    transform: scaleY(1);
 }
 .dropdown-wrapper{
     border-radius: 0.3em;
