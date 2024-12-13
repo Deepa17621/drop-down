@@ -13,6 +13,7 @@ const userList = {
     "Heidi": `<img src="./assets/heidi.jpg" alt="">`
 }
 let savedUsersArr = new Set();
+
 //Configure Drop-Down menu
 function addUsersToList(userList) {
     for (const key in userList) {
@@ -65,13 +66,13 @@ dropdownToggle();
     }
     else {
         inpWrapper.style.cssText = `border: none;
-                                outline: none;`;
+                                    outline: none;`;
     }
     dropdownToggle();
     e.stopPropagation();
 });
 
-searchUser.addEventListener("keyup", (e) => {
+searchUser.addEventListener("input", (e) => {
     e.preventDefault();
     let filteredItem = (Object.entries(userList)).filter(user => {
         userListWrapperUL.innerHTML = "";
@@ -121,6 +122,7 @@ clearBtn.addEventListener("click", (e) => {
             li.querySelector(".check-box").children[0].classList.add("checked");
         });
     }
+    searchUser.value ="";
 });
 
 clearAllBtn.addEventListener("click", (e) => {
@@ -129,27 +131,40 @@ clearAllBtn.addEventListener("click", (e) => {
     selectedUsers.forEach(selectedUser => {
         selectedUser.classList.remove("checked");
     });
-    userInput.textContent = "Select Users";
+    if(document.querySelectorAll(".tag").length>0){
+        userInput.textContent = "";
+    }
+    else{
+        userInput.textContent = "Select Users";
+    }
+    searchUser.value=""
 });
 
 //select user - Event
 function selectUserFunc(usersMenu) {
-    let pickedUsers = [];
     usersMenu.forEach(user => {
         user.addEventListener("click", (e) => {
             e.preventDefault();
+            let tags = document.querySelectorAll(".tag");
+            if(tags.length>0){
+                tags.forEach(element => {
+                    if(element) element.remove()
+                });
+            }
+            remainingCount.textContent = "";
             let checkBox = user.querySelector(".check-box").children;
             let clickedEle = document.querySelectorAll(".checked");
 
             if (checkBox[0].classList.contains("checked")) {
                 checkBox[0].classList.toggle("checked");
+                updateHeaderBeforeDone();
             }
             else if (clickedEle.length >= 5) {
                 (document.querySelectorAll(".user")).forEach(element => {
                     if (!checkBox[0].classList.contains("checked")) {
-                        if (document.querySelectorAll(".checked").length > 5) {
-                            element.style.cursor = element.querySelector(".checked") ? "pointer" : "not-allowed";
-                        }
+                        // if (document.querySelectorAll(".checked").length > 5) {
+                        //     element.style.cursor = element.querySelector(".checked") ? "pointer" : "not-allowed";
+                        // }
                         showToast('Maximum users selected!');
                     }
                 });
@@ -157,21 +172,25 @@ function selectUserFunc(usersMenu) {
             else {
                 checkBox[0].classList.toggle("checked");
             }
-            //update selected Count
-            clickedEle = document.querySelectorAll(".checked");
-            if (clickedEle.length >=0) {
-                // userInput.textContent = "Select Users";
-                userInput.textContent = `${clickedEle.length} user${clickedEle.length > 1 ? "s" : ""} Selected`;
-            }
-            if(clickedEle.length ==0 ) userInput.textContent = "Select Users"
+            updateHeaderBeforeDone();        
         });
     });
 }
 selectUserFunc(usersList);
 
+function updateHeaderBeforeDone() {
+    let clickedEle = document.querySelectorAll(".checked");
+    if (clickedEle.length >=0) {
+        // userInput.textContent = "Select Users";
+        userInput.textContent = `${clickedEle.length} user${clickedEle.length > 1 ? "s" : ""} Selected`;
+    }
+    if(clickedEle.length ==0 ) userInput.textContent = "Select Users";
+}
+
 function updateRemainingCount(selectedUsers) {
     let remaining = document.querySelector(".remaining-user-count");
     if (selectedUsers.length > 2) {
+        remaining.style.visibility="visible";
         remaining.innerHTML = `<span class="count">+${selectedUsers.length - 2}</span>`;
         remaining.style.backgroundColor = "rgba(224, 122, 85, 0.929)";
     }
@@ -190,19 +209,25 @@ doneBtn.addEventListener("click", (e) => {
         location.reload()
     }
     let userArr = {};
-    if(tagsContainer.contains(userInput)) tagsContainer.removeChild(userInput); 
+    if(tagsContainer.contains(userInput)) userInput.textContent=""; 
     selectedUsers.forEach(selectedChild => {
         let user = selectedChild.closest(".user");
         userArr[user.querySelector(".user-name").textContent] = selectedChild;
         savedUsersArr.add(user);
     });
     updateRemainingCount(selectedUsers);
-    tagsContainer.innerHTML = "";
+    let tags = document.querySelectorAll(".tag");
+    tags.forEach(element => {
+        if(element){
+            element.remove()
+        }
+    });
     for (const userName in userArr) {
         if (Object.entries(userArr).length == 0) return;
         if((Object.keys(userArr)).indexOf(userName) == 2) return;
         addTag(userName, userArr[userName], (Object.keys(userArr)).indexOf(userName));
     }
+    searchUser.value="";
 });
 
 remainingCount.addEventListener("click", (e) => {
@@ -247,14 +272,24 @@ function updateInputTag() {   // Need To Update Here.............!
     }
     if (currentCheckedEle.length <= 2) {
         remaining.style.visibility = "hidden";
-        tagsContainer.innerHTML = "";
+        let tags = document.querySelectorAll(".tag");
+        tags.forEach(element => {
+            if(element){
+                element.remove()
+            }
+        });
         currentCheckedEle.forEach(element => {
             if (currentCheckedEle.length == 0) return;
             addTag(element.closest(".user").querySelector(".user-name").textContent, element);
         });
     }
     else if (currentCheckedEle.length > 2) {
-        tagsContainer.innerHTML = "";
+        let tags = document.querySelectorAll(".tag");
+        tags.forEach(element => {
+            if(element){
+                element.remove()
+            }
+        });
         for (let i = 0; i < currentCheckedEle.length; i++) {
             if(i==2) break;
             addTag((currentCheckedEle[i].closest(".user")).querySelector(".user-name").textContent, currentCheckedEle[i]);
