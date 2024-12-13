@@ -49,6 +49,7 @@ const usersList = document.querySelectorAll(".user"),
     chevron = document.querySelector(".chevron"),
     tagsContainer = document.querySelector(".tags-container");
 let remainingCount = document.querySelector(".remaining-user-count");
+let notFound = document.querySelector("#not-found");
 
 userInput.textContent = "Select Users";
 
@@ -75,35 +76,31 @@ dropdownToggle();
 searchUser.addEventListener("input", (e) => {
     e.preventDefault();
     let filteredItem = (Object.entries(userList)).filter(user => {
-        userListWrapperUL.innerHTML = "";
+        // userListWrapperUL.innerHTML = "";
         if (user[0].toLowerCase().includes(searchUser.value.toLowerCase())) {
             return user;
         }
     });
     if (filteredItem.length !== 0) {
-        userListWrapperUL.innerHTML = "";
-        filteredItem.forEach(element => {
-            let li = document.createElement("li");
-            li.setAttribute("class", "user");
-            let template = `<span class="user-profile">${element[1]}</span>
-                            <span class="user-name">${element[0]}</span>
-                            <span class="check-box" tabindex="0">
-                                <i class="fa-solid fa-check"></i>                            
-                            </span>`;
-            li.innerHTML = template;
-            userListWrapperUL.appendChild(li);
+        if(notFound.classList.contains("notfound")){
+            notFound.classList.remove("notfound");
+        }
+        usersList.forEach(element => {
+            element.style.display = "none";
         });
-        selectUserFunc(document.querySelectorAll(".user"));
-
+        filteredItem.forEach(filtered => {
+            usersList.forEach(existing => {
+                if(filtered[0].toLowerCase().includes(existing.querySelector(".user-name").textContent.toLowerCase())){
+                    existing.style.display= "flex";
+                }
+            });
+        });
     }
     else {
-        let span = `<span id="not-found">No Users Found!</span>`;
-        userListWrapperUL.innerHTML = span;
-        (userListWrapperUL.querySelector("#not-found")).style.cssText = `display:flex;
-                                        justify-content:center;
-                                        margin-top: 20%;
-                                        color:red;
-                                        font-size:12px;`;
+        usersList.forEach(element => {
+            element.style.display = "none";
+        });
+        notFound.classList.add("notfound");
     }
     
 });

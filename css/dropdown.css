@@ -145,6 +145,16 @@ main{
     overflow: auto;
     scrollbar-width: none;
 }
+#not-found{
+    display:none;
+    justify-content:center;
+    margin-top: 20%;
+    color:red;
+    font-size:12px;
+}
+#not-found.notfound{
+    display: flex;
+}
 .user{
     max-width: 100%;
     padding: 0.7em 1em;
